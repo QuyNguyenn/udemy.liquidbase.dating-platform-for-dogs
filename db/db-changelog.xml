@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/pro " changeLogId="8dbb93b6-7c4d-4fbb-92e1-b8898a601047">
+
+    <changeSet id="Create BREEDS table" author="quynn">
+        <createTable tableName="BREEDS">
+            <column name="BRE_ID" type="integer" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_BREEDS"/>
+            </column>
+            <column name="bre_name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insert 3 BREEDS" author="quynn">
+        <insert tableName="BREEDS">
+            <column name="bre_name" value="Golden Retriever" />
+        </insert>
+        <insert tableName="BREEDS">
+            <column name="bre_name" value="American Staffordshire Terrier" />
+        </insert>
+        <insert tableName="BREEDS">
+            <column name="bre_name" value="German Shepherd Doger" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="Create PROFILES table" author="quynn">
+        <createTable tableName="PROFILES">
+            <column name="PRO_ID" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="pro_name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="pro_bre_id" type="integer" defaultValue="null" />
+            <column name="pro_height" type="integer" defaultValue="null" />
+            <column name="pro_weight" type="integer" defaultValue="null" />
+            <column name="pro_description" type="varchar(1000)" defaultValue="null" />
+            <column name="pro_image_url" type="varchar(100)" defaultValue="null" />
+        </createTable>
+        <addPrimaryKey tableName="PROFILES" columnNames="pro_id" constraintName="PK_PROFILES" />
+        <addAutoIncrement tableName="PROFILES" columnName="pro_id" columnDataType="integer" />
+    </changeSet>
+
+    <changeSet id="Create IX_PRO_BRE_ID on PROFILES" author="quynn">
+        <createIndex tableName="PROFILES" indexName="IX_PRO_BRE_ID">
+            <column name="pro_bre_id" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="Add FK for PROFILES" author="quynn">
+        <addForeignKeyConstraint baseTableName="PROFILES" baseColumnNames="pro_bre_id" constraintName="FK_PRO_BRE_ID"
+                                 referencedTableName="BREEDS"
+                                 referencedColumnNames="bre_id" />
+    </changeSet>
+
+</databaseChangeLog>
